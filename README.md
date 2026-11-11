@@ -1,37 +1,41 @@
-# [Secure Sandbox Example](https://www.easefilter.com/Forums_Files/Secure-Sandbox.htm)
-A sandbox is a secure, isolated and a tightly controlled environment where programs can be run and data can be protected. Sandboxes restrict what a piece of code can do, giving it just as many, permissions as it needs without adding additional permissions that could be abused.
+# [ EaseFilter Secure Sandbox SDK & Tools](https://www.easefilter.com/Forums_Files/Secure-Sandbox.htm)
+A robust, enterprise-grade file security, process monitoring, and sandboxing framework built on top of Windows file system filter drivers. **EaseFilter Secure Sandbox** provides a tightly controlled, isolated environment to run untrusted applications, prevent malware and ransomware outbreaks, protect confidential data, and enforce strict Zero Trust access control policies.
+![Secure Sandbox Architecture](https://www.easefilter.com/Images/secure-sandbox-architecture.jpg)
 
-## Prevent malicious or malfunctioning programs from running
-Malware — short for malicious software — refers to various types of programs written with the purpose of gaining access to a computer for malicious intent, and often without the user’s knowledge. Malware comes in a variety of forms, such as viruses, spyware, adware, ransomware, and Trojans.There are a number of ways that your device can be infected with malware, but many times it comes from a malicious website, or open the attachment file from your email. By default, anything you download from a web browser will normally go to the %appdata% Downloads folder on your computer.
+## 🚀 Key Features
 
-To prevent the malware from running in the first place, you can setup the sandbox with the policy which not allow the binaries inside the sandbox being launched for those folders where will store the malware, for example "C:\Users\Username\AppData\Local\Temp", "C:\Documents and Settings\ username \Local Settings\Temporary Internet Files". With the sandbox protection, you never have to worry about suspicious attachments or spear phishing attacks, you are safe to download the files from your web browser or you are safe to open your attachment from your email, because of the malware never be launched without your permission.
+* **Advanced Process Isolation:** Restrict the permissions of untrusted Windows executables (`.exe`, scripts) to prevent unauthorized system modifications.
+* **Malware & Ransomware Prevention:** Automatically intercept execution requests from vulnerable directories (such as browser download paths or temporary folders) to stop zero-day threats and malicious attachments.
+* **Granular File Access Control:** Define least-privilege access rights per folder and process, restricting unauthorized processes from reading or altering sensitive files.
+* **Transparent File Encryption:** Automatically encrypt confidential files within sandbox boundaries, preventing unauthorized data exfiltration or distribution outside corporate environments.
+* **Registry Protection:** Lock down critical Windows registry hives to prevent untrusted binaries from making persistent system-level changes.
+* **Multi-Language SDK Support:** Integrates seamlessly into enterprise applications via C#, C++, Python, Java, Go, and Rust APIs.
 
-## Run untrusted Windows programs safely in EaseFilter Secure Sandbox
-How many times have you downloaded an executable file, but were afraid to run it? Have you ever been in a situation which required a clean installation of Windows, but didn’t want to set up a virtual machine? With EaseFilter Secure Sandbox protection, now you can restrict the permission of the untrusted programs running, prevent the programs from changing, deleting your data, or modifying your registry key. So you can safely test and try these untrusted programs and applications within Sandbox and prevent unauthorized changes to your underlying system that may occur.
+---
 
-## Protect your confidential files in EaseFilter Secure Sandbox
+## 🛠️ Architecture & How It Works
 
-The secure sandbox can setup a folder with secure access policies, it can encrypt your sensitive files inside the sandbox, prevent the files from being accessed or modified by unauthorized users or processes. It helps you protect valuable data from malicious apps and threats, such as ransomware. It protects your data by checking against a list of known, trusted processes. Secure folder access works by only allowing processes to access protected folders if the process is included on a list of trusted software. If a process isn't on the list, secure folder access will block it from making changes to files inside secure folders.
+EaseFilter Secure Sandbox operates at the kernel level using the **Windows Minifilter Driver Framework**. It intercepts I/O request packets (IRPs) directly above the file system before they reach their target storage volume.
 
-![Secure Sandbox](https://www.easefilter.com/images/secureSandboxScreenshot.png)
+1. **Interception:** Captures file system operations, process creation requests, and registry modifications in real time.
+2. **Policy Enforcement:** Evaluates process trust levels and matching filter masks (e.g., `C:\Sandbox\*`) against defined access rules.
+3. **Action & Remediation:** Allows, logs, modifies, or blocks operations instantly (e.g., blocking write access to protected directories or denying execution of untrusted binaries).
 
-### Prevent or restrict the executable binaries running
+---
 
-1. Setup secure sandbox folder filter mask, i.e., c:\sandbox\*, this is the folder which the executable binaries located.
-2. Allow the binaries being executed if you want to test the binaries, or disable the execution of the binaries to prevent the untrusted processes from running. For example, you can setup a sandbox for the download folder to prevent the untrusted download binaries from running.
-3. If you allow the binaries to run, you can also allow or deny the binaries to access or change the registries. To protect the registries being changed by the binaries, you can disable the registries changing feature.
-4. Setup the specific file access rights to different file folders for the process. By default, set the least access rights for all files to the process, then if you want to allow the process to access some specific folders, add these folders with specific rights to the process as the below image, allow the process with read access to the folder c:\windows, allow full rights access to the folder c:\mysandbox.
+## 📋 Configuration Guide
 
-![file access rights](https://www.easefilter.com/images/process-file-access-rights.png)
+### 1. Restricting Executable Binaries
+* Configure sandbox folder filter masks (e.g., `C:\Sandbox\*`).
+* Enable or disable execution permissions to test untrusted applications safely without risking your underlying operating system or setting up cumbersome virtual machines.
+* Configure fine-grained access rights (e.g., allow read-only access to `C:\Windows` while granting full rights to `C:\MySandbox`).
 
-### Protect your confidential files with sandbox
+### 2. Protecting Confidential Files
+* Designate protected folders (e.g., `C:\ProtectedFolder\*`).
+* Apply least-privilege default rules so only verified, authorized processes (such as those launched from trusted system directories) can interact with sensitive data.
+* Enable transparent encryption to secure data at rest.
 
-1. Setup the sandbox for the protected folder, i.e., c:\protectedFolder\*.
-2. Setup the default access rights to the protected folder, i.e., add the least access rights to the protected folder, it meant only the authorized processes can access the protected folder.
-3. Enable encryption for the protected folder, prevent the confidential files from being distributed to out of your company.
-4. Add authorized processes to the protected folder, i.e., the below image shows that all processes which were launched from c:\windows folder were authorized to read the sandbox.
-
-![Authorized processes](https://www.easefilter.com/images/AuthorizedProcesses.png)
+---
 
 
 ## EaseFilter File System Filter Driver SDK Reference
@@ -73,6 +77,17 @@ The secure sandbox can setup a folder with secure access policies, it can encryp
 * [Filter Driver Developer Guide](https://www.easefilter.com/kb/DeveloperGuide.htm)
 * [MiniFilter Filter Driver Framework](https://www.easefilter.com/kb/minifilter-framework.htm)
 * [Isolation Filter Driver](https://www.easefilter.com/kb/Isolation_Filter_Driver.htm)
+
+## License
+
+This repository contains two distinct licensing categories:
+
+1. **Wrapper/Implementation Code (MIT License):** 
+   The source code, scripts, and configuration files provided directly in this repository are licensed under the [MIT License](LICENSE). You are free to modify, distribute, and use this specific integration code.
+
+2. **EaseFilter SDK (Commercial License):**
+   This project requires the EaseFilter SDK (including its binaries, filter drivers, and core libraries) to function. The EaseFilter SDK is **proprietary commercial software** and is strictly excluded from the MIT License.   
+   To use the EaseFilter SDK for commercial purposes or in a production environment, you must obtain a valid commercial license directly from [EaseFilter](https://www.easefilter.com/license.pdf).
 
 ## Support
 If you have questions or need help, please contact support@easefilter.com 
